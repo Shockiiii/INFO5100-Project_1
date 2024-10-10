@@ -108,7 +108,9 @@
         .attr("opacity", 0.7);
 
       //platform legend
-       const platformLegend = d3.map(data,d=>d.Platform)
+      const uniquePlatforms = data.filter((d, index, self) =>
+  index === self.findIndex(t => t.Platform === d.Platform) // Find first occurrence of each platform
+);
        const legend = svg.append("g")
           .attr("class", "legendGroup")
           .attr("transform", `translate(${width - margin.right - 150}, ${margin.top})`)
@@ -138,8 +140,10 @@
         .attr("font-size", "12px")
         .attr("fill", "#000")  // Set text color for better visibility
         .text(d => d);
-            console.log(legend);
-            //  console.log(platformLegend);
+        
+        
+      //check
+        console.log(platformLegend);
 
 
 
