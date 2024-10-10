@@ -16,6 +16,10 @@
     .gridlines .domain {
       stroke: none;
     }
+    .legend{
+      width:30px ;
+      height:30px ;
+    }
   </style>
 </head>
 
@@ -40,7 +44,7 @@
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     d3.csv("Filtered_Top_Games__2000_and_Earlier_.csv", d3.autoType).then(data => {
-
+      console.log("dataset:", Object.keys(data[0]));
       //exten and scale
       const xExtent = d3.extent(data, d => d.Year);
       const xScale = d3.scaleLinear()
@@ -103,7 +107,42 @@
         .attr("fill", d => colorScale(d.Platform))
         .attr("opacity", 0.7);
 
-      
+      //platform legend
+       const platformLegend = d3.map(data,d=>d.Platform)
+       const legend = svg.append("g")
+          .attr("class", "legendGroup")
+          .attr("transform", `translate(${width - margin.right - 150}, ${margin.top})`)
+          .style("border", "1px solid black")  
+          .style("background-color", "#f9f9f9"); 
+
+      // Create legend items for each unique platform
+      const legendItems = legend.selectAll(".legendItem")
+        .data(platformLegend)
+        .enter()
+        .append("g")
+        .attr("class", "legendItem")
+        .attr("transform", (d, i) => `translate(0, ${i * 25})`); 
+
+      // Append colored rectangles to represent each platform
+      legendItems.append("rect")
+        .attr("x", 0)
+        .attr("width", 20)
+        .attr("height", 20)
+        .attr("fill", d => colorScale(d))
+        .attr("opacity", 0.7);
+
+      // Append text labels for each platform
+      legendItems.append("text")
+        .attr("x", 30)
+        .attr("y", 15) // Center text vertically relative to the rectangles
+        .attr("font-size", "12px")
+        .attr("fill", "#000")  // Set text color for better visibility
+        .text(d => d);
+            console.log(legend);
+            //  console.log(platformLegend);
+
+
+
     });
   </script>
 </body>
