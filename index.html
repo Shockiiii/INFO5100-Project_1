@@ -16,9 +16,10 @@
     .gridlines .domain {
       stroke: none;
     }
-    .legend{
-      width:30px ;
-      height:30px ;
+  
+    .axis-label{
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      font-size: 20px;
     }
   </style>
 </head>
@@ -35,7 +36,7 @@
     const svg = d3.select("svg#salesChart");
     const width = svg.attr("width");
     const height = svg.attr("height");
-    const margin = { top: 10, right: 20, bottom: 50, left: 100 };
+    const margin = { top: 10, right: 20, bottom: 50, left: 130 };
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom-400;
 
@@ -96,6 +97,29 @@
                 .attr("transform", "translate(" + (margin.left - 10) + "," + margin.top + ")")
                 .call(leftGridlines);
 
+
+
+        //label
+          // X-Axis 
+            svg.append("text")
+              .attr("class", "x axis-label")
+              .attr("x", margin.left + chartWidth / 2)  // Center horizontally
+              .attr("y", chartHeight + 80)  // Position near the bottom
+              .style("text-anchor", "middle")
+              .text("Year");  // Set the label text
+
+          // Y-Axis 
+          svg.append("text")
+            .attr("class", "y axis-label")
+            .attr("x", -(chartHeight / 2) - margin.top)  
+            .attr("y", 20)  // Position n
+            .attr("transform", "rotate(-90)")  // Rotate 
+            .style("text-anchor", "middle")
+            .text("Game Genre");  // Set the label text
+
+
+
+
       //circle
       chartArea.selectAll("circle")
         .data(data)
@@ -110,7 +134,7 @@
       //platform legend
         const platformLegend = data.filter((d, index, self) =>index === self.findIndex(t => t.Platform === d.Platform));
 
-       const legend = svg.append("g")
+        const legend = svg.append("g")
           .attr("class", "legendGroup")
           .attr("transform", `translate(${margin.right+20}, ${margin.bottom+chartHeight+50})`)
           .style("border", "1px solid black")  
