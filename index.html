@@ -41,13 +41,11 @@
 
     d3.csv("Filtered_Top_Games__2000_and_Earlier_.csv", d3.autoType).then(data => {
 
-
+      //exten and scale
       const xExtent = d3.extent(data, d => d.Year);
-
       const xScale = d3.scaleLinear()
         .domain(xExtent)
         .range([0, chartWidth]);
-
 
       const yExtent = d3.map(data, d => d.Genre);
       const yScale = d3.scaleBand()
@@ -57,23 +55,19 @@
       const sizeScale = d3.scaleSqrt()
         .domain([0, d3.max(data, d => d.Global_Sales)])
         .range([5, 40]);
-
       const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
         .domain(data.map(d => d.Platform));
-
+      //axis
         let bottomAxis = d3.axisBottom(xScale)
                 .ticks(20)
-
-
-            let bottomGridlines = d3.axisBottom(xScale)
+        let bottomGridlines = d3.axisBottom(xScale)
                 .ticks(20)
                 .tickSize(-chartWidth - 10)
                 .tickFormat("");
 
 
-            let leftAxis = d3.axisLeft(yScale);
-
-            let leftGridlines = d3.axisLeft(yScale)
+        let leftAxis = d3.axisLeft(yScale);
+        let leftGridlines = d3.axisLeft(yScale)
                 .tickSize(-chartWidth - 10)
                 .tickFormat("");
 
@@ -98,7 +92,7 @@
                 .attr("transform", "translate(" + (margin.left - 10) + "," + margin.top + ")")
                 .call(leftGridlines);
 
-
+      //circle
       chartArea.selectAll("circle")
         .data(data)
         .enter()
