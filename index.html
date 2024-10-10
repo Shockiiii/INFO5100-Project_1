@@ -20,6 +20,7 @@
     .axis-label{
       font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
       font-size: 20px;
+      text-anchor: middle;
     }
   </style>
 </head>
@@ -105,7 +106,6 @@
               .attr("class", "x axis-label")
               .attr("x", margin.left + chartWidth / 2)  // Center horizontally
               .attr("y", chartHeight + 80)  // Position near the bottom
-              .style("text-anchor", "middle")
               .text("Year");  // Set the label text
 
           // Y-Axis 
@@ -113,8 +113,7 @@
             .attr("class", "y axis-label")
             .attr("x", -(chartHeight / 2) - margin.top)  
             .attr("y", 20)  // Position n
-            .attr("transform", "rotate(-90)")  // Rotate 
-            .style("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")  // Rotate    
             .text("Game Genre");  // Set the label text
 
 
