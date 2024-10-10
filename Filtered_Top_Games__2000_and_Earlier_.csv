@@ -1,0 +1,22 @@
+,Unnamed: 0,Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,Global_Sales
+0,258,259,Asteroids,2600,1980.0,Shooter,Atari,4.0,0.26,0.0,0.05,4.31
+1,239,240,Pitfall!,2600,1981.0,Platform,Activision,4.21,0.24,0.0,0.05,4.5
+2,89,90,Pac-Man,2600,1982.0,Puzzle,Atari,7.28,0.45,0.0,0.08,7.81
+3,421,422,Baseball,NES,1983.0,Sports,Nintendo,0.73,0.1,2.35,0.02,3.2
+4,9,10,Duck Hunt,NES,1984.0,Shooter,Nintendo,26.93,0.63,0.28,0.47,28.31
+5,1,2,Super Mario Bros.,NES,1985.0,Platform,Nintendo,29.08,3.58,6.81,0.77,40.24
+6,127,128,The Legend of Zelda,NES,1986.0,Action,Nintendo,3.74,0.93,1.69,0.14,6.51
+7,251,252,Zelda II: The Adventure of Link,NES,1987.0,Adventure,Nintendo,2.19,0.5,1.61,0.08,4.38
+8,22,23,Super Mario Bros. 3,NES,1988.0,Platform,Nintendo,9.54,3.44,3.84,0.46,17.28
+9,5,6,Tetris,GB,1989.0,Puzzle,Nintendo,23.2,2.26,4.22,0.58,30.26
+10,18,19,Super Mario World,SNES,1990.0,Platform,Nintendo,12.78,3.75,3.54,0.55,20.61
+11,231,232,The Legend of Zelda: A Link to the Past,SNES,1991.0,Action,Nintendo,2.42,0.91,1.15,0.13,4.61
+12,50,51,Super Mario Land 2: 6 Golden Coins,GB,1992.0,Adventure,Nintendo,6.16,2.04,2.69,0.29,11.18
+13,57,58,Super Mario All-Stars,SNES,1993.0,Platform,Nintendo,5.99,2.15,2.12,0.29,10.55
+14,71,72,Donkey Kong Country,SNES,1994.0,Platform,Nintendo,4.36,1.71,3.0,0.23,9.3
+15,187,188,Donkey Kong Country 2: Diddy's Kong Quest,SNES,1995.0,Platform,Nintendo,2.1,0.74,2.2,0.11,5.15
+16,4,5,Pokemon Red/Pokemon Blue,GB,1996.0,Role-Playing,Nintendo,11.27,8.89,10.22,1.0,31.37
+17,52,53,Gran Turismo,PS,1997.0,Racing,Sony Computer Entertainment,4.02,3.87,2.54,0.52,10.95
+18,30,31,Pokémon Yellow: Special Pikachu Edition,GB,1998.0,Role-Playing,Nintendo,5.89,5.04,3.12,0.59,14.64
+19,12,13,Pokemon Gold/Pokemon Silver,GB,1999.0,Role-Playing,Nintendo,9.0,6.18,7.2,0.71,23.1
+20,132,133,Pokémon Crystal Version,GB,2000.0,Role-Playing,Nintendo,2.55,1.56,1.29,0.99,6.39

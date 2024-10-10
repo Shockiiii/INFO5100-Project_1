@@ -1,11 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <title>Game Sales Visualization</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    .axis text {
+      font-size: 12px;
+    }
+
+    .gridlines line {
+      stroke: #bbb;
+      stroke-opacity: 0.7;
+    }
+
+    .gridlines .domain {
+      stroke: none;
+    }
+  </style>
 </head>
+
 <body>
-    
+  <p>
+  <h3>Game Sales by Year, Genre, and Platform</h3>
+  <svg id="salesChart" width="1000" height="600"></svg>
+  </p>
+
+
+  <script>
+
+    const svg = d3.select("svg#salesChart");
+    const width = svg.attr("width");
+    const height = svg.attr("height");
+    const margin = { top: 10, right: 20, bottom: 50, left: 100 };
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+
+    let annotations = svg.append("g").attr("id", "annotations");
+    let chartArea = svg.append("g").attr("id", "points")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    d3.csv("Filtered_Top_Games__2000_and_Earlier_.csv", d3.autoType).then(data => {
+
+
+      const xExtent = d3.extent(data, d => d.Year);
+
+      const xScale = d3.scaleLinear()
+        .domain(xExtent)
+        .range([0, chartWidth]);
+
+
+      const yExtent = d3.map(data, d => d.Genre);
+      const yScale = d3.scaleBand()
+        .domain(yExtent)
+        .range([chartHeight, 0])
+
+      const sizeScale = d3.scaleSqrt()
+        .domain([0, d3.max(data, d => d.Global_Sales)])
+        .range([5, 40]);
+
+      const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
+        .domain(data.map(d => d.Platform));
+
+        let bottomAxis = d3.axisBottom(xScale)
+                .ticks(20)
+
+
+            let bottomGridlines = d3.axisBottom(xScale)
+                .ticks(20)
+                .tickSize(-chartWidth - 10)
+                .tickFormat("");
+
+
+            let leftAxis = d3.axisLeft(yScale);
+
+            let leftGridlines = d3.axisLeft(yScale)
+                .tickSize(-chartWidth - 10)
+                .tickFormat("");
+
+
+            annotations.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(" + margin.left + "," + (chartHeight + margin.top + 10) + ")")
+                .call(bottomAxis);
+
+            annotations.append("g")
+                .attr("class", "x gridlines")
+                .attr("transform", "translate(" + margin.left + "," + (chartHeight + margin.top + 10) + ")")
+                .call(bottomGridlines);
+
+            annotations.append("g")
+                .attr("class", "y axis")
+                .attr("transform", "translate(" + (margin.left - 30) + "," + margin.top + ")")
+                .call(leftAxis);
+
+            annotations.append("g")
+                .attr("class", "y gridlines")
+                .attr("transform", "translate(" + (margin.left - 10) + "," + margin.top + ")")
+                .call(leftGridlines);
+
+
+      chartArea.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", d => xScale(+d.Year))
+        .attr("cy", d => yScale(d.Genre) + yScale.bandwidth() / 2)
+        .attr("r", d => sizeScale(+d.Global_Sales) / 1.5)
+        .attr("fill", d => colorScale(d.Platform))
+        .attr("opacity", 0.7);
+
+      
+    });
+  </script>
 </body>
+
 </html>
