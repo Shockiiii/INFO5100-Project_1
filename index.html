@@ -1,5 +1,5 @@
+<!DOCTYPE html>
 <html>
-
 <head>
   <title>Game Sales Visualization</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -16,8 +16,8 @@
     .gridlines .domain {
       stroke: none;
     }
-  
-    .axis-label{
+
+    .axis-label {
       font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
       font-size: 20px;
       text-anchor: middle;
@@ -26,42 +26,16 @@
 </head>
 
 <body>
-  <p>
   <h3>Game Sales by Year, Genre, and Platform</h3>
   <svg id="salesChart" width="1000" height="1000"></svg>
-  <defs>
-    <pattern id="2600" patternUnits="objectBoundingBox" width="40" height="40">
-      <image href="2600.png" width="40" height="40" />
-    </pattern>
-
-    <pattern id="NES" patternUnits="objectBoundingBox" width="40" height="40">
-      <image href="NES.png" width="40" height="40" />
-    </pattern>
-
-    <pattern id="GB" patternUnits="objectBoundingBox" width="40" height="40">
-      <image href="GB.png" width="40" height="40" />
-    </pattern>
-
-    <pattern id="SNES" patternUnits="objectBoundingBox" width="40" height="40">
-      <image href="SNES.png" width="40" height="40" />
-    </pattern>
-
-    <pattern id="PS" patternUnits="objectBoundingBox" width="40" height="40">
-      <image href="PS.png" width="40" height="40" />
-    </pattern>
-
-  </defs>
-  </p>
-
 
   <script>
-
     const svg = d3.select("svg#salesChart");
     const width = svg.attr("width");
     const height = svg.attr("height");
     const margin = { top: 10, right: 20, bottom: 50, left: 130 };
     const chartWidth = width - margin.left - margin.right;
-    const chartHeight = height - margin.top - margin.bottom-400;
+    const chartHeight = height - margin.top - margin.bottom - 400;
 
     let annotations = svg.append("g").attr("id", "annotations");
     let chartArea = svg.append("g").attr("id", "points")
@@ -69,7 +43,7 @@
 
     d3.csv("Filtered_Top_Games__2000_and_Earlier_.csv", d3.autoType).then(data => {
       console.log("dataset:", Object.keys(data[0]));
-      //exten and scale
+      
       const xExtent = d3.extent(data, d => d.Year);
       const xScale = d3.scaleLinear()
         .domain(xExtent)
@@ -78,173 +52,71 @@
       const yExtent = d3.map(data, d => d.Genre);
       const yScale = d3.scaleBand()
         .domain(yExtent)
-        .range([chartHeight, 0])
+        .range([chartHeight, 0]);
 
       const sizeScale = d3.scaleSqrt()
         .domain([0, d3.max(data, d => d.Global_Sales)])
         .range([5, 40]);
-      const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
-        .domain(data.map(d => d.Platform));
-      //axis
-        let bottomAxis = d3.axisBottom(xScale)
-                .ticks(20)
-        let bottomGridlines = d3.axisBottom(xScale)
-                .ticks(20)
-                .tickSize(-chartWidth - 10)
-                .tickFormat("");
 
+      const imageMap = {
+        "2600": "2600.png",
+        "NES": "NES.png",
+        "GB": "GB.png",
+        "SNES": "SNES.png",
+        "PS": "PS.png"
+      };
 
-        let leftAxis = d3.axisLeft(yScale);
-        let leftGridlines = d3.axisLeft(yScale)
-                .tickSize(-chartWidth - 10)
-                .tickFormat("");
+      let bottomAxis = d3.axisBottom(xScale).ticks(20);
+      let bottomGridlines = d3.axisBottom(xScale).ticks(20).tickSize(-chartWidth - 10).tickFormat("");
+      let leftAxis = d3.axisLeft(yScale);
+      let leftGridlines = d3.axisLeft(yScale).tickSize(-chartWidth - 10).tickFormat("");
 
+      annotations.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(" + margin.left + "," + (chartHeight + margin.top + 10) + ")")
+        .call(bottomAxis);
 
-            annotations.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(" + margin.left + "," + (chartHeight + margin.top + 10) + ")")
-                .call(bottomAxis);
+      annotations.append("g")
+        .attr("class", "x gridlines")
+        .attr("transform", "translate(" + margin.left + "," + (chartHeight + margin.top + 10) + ")")
+        .call(bottomGridlines);
 
-            annotations.append("g")
-                .attr("class", "x gridlines")
-                .attr("transform", "translate(" + margin.left + "," + (chartHeight + margin.top + 10) + ")")
-                .call(bottomGridlines);
+      annotations.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(" + (margin.left - 30) + "," + margin.top + ")")
+        .call(leftAxis);
 
-            annotations.append("g")
-                .attr("class", "y axis")
-                .attr("transform", "translate(" + (margin.left - 30) + "," + margin.top + ")")
-                .call(leftAxis);
+      annotations.append("g")
+        .attr("class", "y gridlines")
+        .attr("transform", "translate(" + (margin.left - 10) + "," + margin.top + ")")
+        .call(leftGridlines);
 
-            annotations.append("g")
-                .attr("class", "y gridlines")
-                .attr("transform", "translate(" + (margin.left - 10) + "," + margin.top + ")")
-                .call(leftGridlines);
+      svg.append("text")
+        .attr("class", "x axis-label")
+        .attr("x", margin.left + chartWidth / 2)
+        .attr("y", chartHeight + 80)
+        .text("Year");
 
+      svg.append("text")
+        .attr("class", "y axis-label")
+        .attr("x", -(chartHeight / 2) - margin.top)
+        .attr("y", 20)
+        .attr("transform", "rotate(-90)")
+        .text("Game Genre");
 
-
-        //label
-          // X-Axis 
-            svg.append("text")
-              .attr("class", "x axis-label")
-              .attr("x", margin.left + chartWidth / 2)  // Center horizontally
-              .attr("y", chartHeight + 80)  // Position near the bottom
-              .text("Year");  // Set the label text
-
-          // Y-Axis 
-          svg.append("text")
-            .attr("class", "y axis-label")
-            .attr("x", -(chartHeight / 2) - margin.top)  
-            .attr("y", 20)  // Position n
-            .attr("transform", "rotate(-90)")  // Rotate    
-            .text("Game Genre");  // Set the label text
-
-      // 先不用管这堆
-      // var defs = svg.append("defs");
-
-      // defs.append("pattern"
-      //     .attr("id", "2600")
-      //     .attr("height", "100%")
-      //     .attr("width", "100%")
-      //     .attr("patternContentUnits", "objectBoundingBox")
-      //     .append("image")
-      //     .attr("height", 1)
-      //     .attr("width", 1)
-      //     .attr("preserveAspectRatio", "none")
-      //     .attr("href", "2600.png")
-      //     )
-
-      //circle
-      // 我尝试的code：
-      chartArea.selectAll("circle")
+      chartArea.selectAll("image")
         .data(data)
         .enter()
-        .append("circle")
-        .attr("cx", d => xScale(+d.Year))
-        .attr("cy", d => yScale(d.Genre) + yScale.bandwidth() / 2)
-        .attr("r", d => sizeScale(+d.Global_Sales) / 1.5)
-        .attr("fill", d => {
-          if (data.Platform === "2600") return "url(#2600)";
-          if (data.Platform === "NES") return "url(#NES)";
-          if (data.Platform === "GB") return "url(#GB)";
-          if (data.Platform === "SNES") return "url(#SNES)";
-          if (data.Platform === "PS") return "url(#PS)";
-        })
+        .append("image")
+        .attr("xlink:href", d => imageMap[d.Platform])
+        .attr("x", d => xScale(+d.Year) - 20) 
+        .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2 - 20)
+        .attr("width", d => sizeScale(+d.Global_Sales))
+        .attr("height", d => sizeScale(+d.Global_Sales))
         .attr("opacity", 0.8);
 
-      //先隐藏一下原本的：
-      // //circle
-      // chartArea.selectAll("circle")
-      //   .data(data)
-      //   .enter()
-      //   .append("circle")
-      //   .attr("cx", d => xScale(+d.Year))
-      //   .attr("cy", d => yScale(d.Genre) + yScale.bandwidth() / 2)
-      //   .attr("r", d => sizeScale(+d.Global_Sales) / 1.5)
-      //   .attr("fill", d => colorScale(d.Platform))
-      //   .attr("opacity", 0.7);
-      //   //add text
-      //   chartArea.selectAll("text")
-      //   .data(data)
-      //   .enter()
-      //   .append("text")
-      //   .attr("x", d => xScale(+d.Year))
-      //   .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2)
-      //       //.attr("dy", "-1em") 
-      //   .attr("text-anchor", "middle") 
-      //   .attr("font-size", "15px")
-      //   .attr("fill", "#000")  
-      //   .text(d => d.Name);
-
-      //platform legend
-        const platformLegend = data.filter((d, index, self) =>index === self.findIndex(t => t.Platform === d.Platform));
-     
-        const legend = svg.append("g")
-          .attr("class", "legendGroup")
-          .attr("transform", `translate(${margin.right+20}, ${margin.bottom+chartHeight+50})`)
-          .style("border", "1px solid black")  
-          .style("background-color", "#f9f9f9"); 
-
-      // Added legend title
-      legend.append("text")
-            .attr("class", "legendTitle")
-            .attr("x", 0)
-            .attr("y", -10)
-            .attr("font-size", "20px")
-            .attr("font-weight", "bold")
-            .text("Platform Type");
-
-      // Create legend items for each unique platform
-      const legendItems = legend.selectAll("legendItem")
-        .data(platformLegend)
-        .enter()
-        .append("g")
-        .attr("class", "legendItem")
-        .attr("transform", (d, i) => `translate(0, ${i * 25})`); 
-
-      // color circle
-      legendItems.append("circle")
-        .attr("r", 10)
-        .attr("cx", 15)
-        .attr("cy", 15)
-        .attr("fill", d => colorScale(d.Platform))
-        .attr("opacity", 0.7);
-
-      // text
-      legendItems.append("text")
-        .attr("x", 40)
-        .attr("y", 20) // Center text vertically relative to the rectangles
-        .attr("font-size", "20px")
-        .attr("fill", "#000")  // Set text color for better visibility
-        .text(d => d.Platform);
-        
-        
-      //check
-        console.log(platformLegend);
-
-
-
+      console.log(data);
     });
   </script>
 </body>
-
 </html>
