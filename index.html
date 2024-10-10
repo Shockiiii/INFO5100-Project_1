@@ -148,7 +148,7 @@
         .attr("class", "legendItem")
         .attr("transform", (d, i) => `translate(0, ${i * 25})`); 
 
-      // Append colored rectangles to represent each platform
+      // color circle
       legendItems.append("circle")
         .attr("r", 10)
         .attr("cx", 15)
@@ -156,7 +156,7 @@
         .attr("fill", d => colorScale(d.Platform))
         .attr("opacity", 0.7);
 
-      // Append text labels for each platform
+      // text
       legendItems.append("text")
         .attr("x", 40)
         .attr("y", 20) // Center text vertically relative to the rectangles
