@@ -29,6 +29,28 @@
   <p>
   <h3>Game Sales by Year, Genre, and Platform</h3>
   <svg id="salesChart" width="1000" height="1000"></svg>
+  <defs>
+    <pattern id="2600" patternUnits="objectBoundingBox" width="40" height="40">
+      <image href="2600.png" width="40" height="40" />
+    </pattern>
+
+    <pattern id="NES" patternUnits="objectBoundingBox" width="40" height="40">
+      <image href="NES.png" width="40" height="40" />
+    </pattern>
+
+    <pattern id="GB" patternUnits="objectBoundingBox" width="40" height="40">
+      <image href="GB.png" width="40" height="40" />
+    </pattern>
+
+    <pattern id="SNES" patternUnits="objectBoundingBox" width="40" height="40">
+      <image href="SNES.png" width="40" height="40" />
+    </pattern>
+
+    <pattern id="PS" patternUnits="objectBoundingBox" width="40" height="40">
+      <image href="PS.png" width="40" height="40" />
+    </pattern>
+
+  </defs>
   </p>
 
 
@@ -116,10 +138,23 @@
             .attr("transform", "rotate(-90)")  // Rotate    
             .text("Game Genre");  // Set the label text
 
+      // 先不用管这堆
+      // var defs = svg.append("defs");
 
-
+      // defs.append("pattern"
+      //     .attr("id", "2600")
+      //     .attr("height", "100%")
+      //     .attr("width", "100%")
+      //     .attr("patternContentUnits", "objectBoundingBox")
+      //     .append("image")
+      //     .attr("height", 1)
+      //     .attr("width", 1)
+      //     .attr("preserveAspectRatio", "none")
+      //     .attr("href", "2600.png")
+      //     )
 
       //circle
+      // 我尝试的code：
       chartArea.selectAll("circle")
         .data(data)
         .enter()
@@ -127,20 +162,38 @@
         .attr("cx", d => xScale(+d.Year))
         .attr("cy", d => yScale(d.Genre) + yScale.bandwidth() / 2)
         .attr("r", d => sizeScale(+d.Global_Sales) / 1.5)
-        .attr("fill", d => colorScale(d.Platform))
-        .attr("opacity", 0.7);
-        //add text
-        chartArea.selectAll("text")
-        .data(data)
-        .enter()
-        .append("text")
-        .attr("x", d => xScale(+d.Year))
-        .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2)
-            //.attr("dy", "-1em") 
-        .attr("text-anchor", "middle") 
-        .attr("font-size", "15px")
-        .attr("fill", "#000")  
-        .text(d => d.Name);
+        .attr("fill", d => {
+          if (data.Platform === "2600") return "url(#2600)";
+          if (data.Platform === "NES") return "url(#NES)";
+          if (data.Platform === "GB") return "url(#GB)";
+          if (data.Platform === "SNES") return "url(#SNES)";
+          if (data.Platform === "PS") return "url(#PS)";
+        })
+        .attr("opacity", 0.8);
+
+      //先隐藏一下原本的：
+      // //circle
+      // chartArea.selectAll("circle")
+      //   .data(data)
+      //   .enter()
+      //   .append("circle")
+      //   .attr("cx", d => xScale(+d.Year))
+      //   .attr("cy", d => yScale(d.Genre) + yScale.bandwidth() / 2)
+      //   .attr("r", d => sizeScale(+d.Global_Sales) / 1.5)
+      //   .attr("fill", d => colorScale(d.Platform))
+      //   .attr("opacity", 0.7);
+      //   //add text
+      //   chartArea.selectAll("text")
+      //   .data(data)
+      //   .enter()
+      //   .append("text")
+      //   .attr("x", d => xScale(+d.Year))
+      //   .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2)
+      //       //.attr("dy", "-1em") 
+      //   .attr("text-anchor", "middle") 
+      //   .attr("font-size", "15px")
+      //   .attr("fill", "#000")  
+      //   .text(d => d.Name);
 
       //platform legend
         const platformLegend = data.filter((d, index, self) =>index === self.findIndex(t => t.Platform === d.Platform));
@@ -150,6 +203,15 @@
           .attr("transform", `translate(${margin.right+20}, ${margin.bottom+chartHeight+50})`)
           .style("border", "1px solid black")  
           .style("background-color", "#f9f9f9"); 
+
+      // Added legend title
+      legend.append("text")
+            .attr("class", "legendTitle")
+            .attr("x", 0)
+            .attr("y", -10)
+            .attr("font-size", "20px")
+            .attr("font-weight", "bold")
+            .text("Platform Type");
 
       // Create legend items for each unique platform
       const legendItems = legend.selectAll("legendItem")
