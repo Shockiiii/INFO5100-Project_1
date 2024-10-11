@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 <html>
+
 <head>
   <title>Game Sales Visualization</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -30,135 +30,108 @@
       padding-top: 18px;
       padding-bottom: 18px;
     }
-    
   </style>
 </head>
 
 <body>
-  <p> Game Sales by Year, Genre, and Platform at the Dawn of Millennium<p>
-  <svg id="salesChart" width="1500" height="900"></svg>
+  <p> Game Sales by Year, Genre, and Platform at the Dawn of Millennium
+  <p>
+    <svg id="salesChart" width="1900" height="1800"></svg>
 
-  <script>
-    const svg = d3.select("svg#salesChart");
-    const width = svg.attr("width");
-    const height = svg.attr("height");
-    const margin = { top: 10, right: 20, bottom: 50, left: 130 };
-    const chartWidth = width - margin.left - margin.right;
-    const chartHeight = height - margin.top - margin.bottom-300 ;
+    <script>
+      const svg = d3.select("svg#salesChart");
+      const width = svg.attr("width");
+      const height = svg.attr("height");
+      const margin = { top: 10, right: 40, bottom: 800, left: 130 };
+      const chartWidth = width - margin.left - margin.right;
+      const chartHeight = height - margin.top - margin.bottom - 300;
 
-    let annotations = svg.append("g").attr("id", "annotations");
-    let chartArea = svg.append("g").attr("id", "points")
-                       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      let annotations = svg.append("g").attr("id", "annotations");
+      let chartArea = svg.append("g").attr("id", "points")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.csv("Filtered_Top_Games__2000_and_Earlier_.csv", d3.autoType).then(data => {
-      console.log("dataset:", Object.keys(data[0]));
-      
-      const xExtent = d3.extent(data, d => d.Year);
-      const xScale = d3.scaleLinear()
-                        .domain(xExtent)
-                        .range([0, chartWidth]);
+      d3.csv("Filtered_Top_Games__2000_and_Earlier_.csv", d3.autoType).then(data => {
+        //console.log("dataset:", Object.keys(data[0]));
 
-      const yExtent = d3.map(data, d => d.Genre);
-      const yScale = d3.scaleBand()
-                        .domain(yExtent)
-                        .range([chartHeight, 0]);
+        const xExtent = d3.extent(data, d => d.Year);
+        const xScale = d3.scaleLinear()
+          .domain(xExtent)
+          .range([0, chartWidth]);
 
-      const sizeScale = d3.scaleLinear()
-                          .domain([0, d3.max(data, d => d.Global_Sales)])
-                          .range([40, 100]);
+        const yExtent = d3.map(data, d => d.Genre);
+        const yScale = d3.scaleBand()
+          .domain(yExtent)
+          .range([chartHeight, 0]);
 
-      const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
-                           .domain(data.map(d => d.Platform));
+        const sizeScale = d3.scaleLinear()
+          .domain([0, d3.max(data, d => d.Global_Sales)])
+          .range([40, 100]);
 
-      const imageMap = {
-        "Asteroids": "game icon/asteroids.png",
-        "Pitfall!": "game icon/Pitfall!.png",
-        "Pac-Man": "game icon/Pac-Man.png",
-        "Baseball": "game icon/Baseball.png",
-        "Duck Hunt": "game icon/Duck_Hunt.png",
-        "Super Mario Bros.": "game icon/Super Mario Bros.png",
-        "The Legend of Zelda": "game icon/The Legend of Zelda.png",
-        "Zelda II: The Adventure of Link": "game icon/Zelda II The Adventure of Link.png",
-        "Super Mario Bros. 3": "game icon/Super Mario Bros 3.png",
-        "Tetris": "game icon/Tetris.png",
-        "Super Mario World": "game icon/Super Mario World.png",
-        "The Legend of Zelda: A Link to the Past": "game icon/The Legend of Zelda A Link to the Past.png",
-        "Super Mario Land 2: 6 Golden Coins": "game icon/Super Mario Land 2 6 Golden Coins.png",
-        "Super Mario All-Stars": "game icon/Super Mario All-Stars.png",
-        "Donkey Kong Country": "game icon/Donkey Kong Country.png",
-        "Donkey Kong Country 2: Diddy's Kong Quest": "game icon/Donkey Kong Country 2 Diddy's Kong Quest.png",
-        "Pokemon Red/Pokemon Blue": "game icon/Pokemon Red Pokemon Blue.png",
-        "Gran Turismo": "game icon/Gran Turismo.png",
-        "Pokemon Yellow: Special Pikachu Edition": "game icon/Pokemon Yellow Special Pikachu Edition.png",
-        "Pokemon Gold/Pokemon Silver": "game icon/Pokemon Gold Pokemon Silver.png",
-        "Pokemon Crystal Version": "game icon/Pokemon Crystal Version.png",
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
+          .domain(data.map(d => d.Platform));
 
-      };
+        const imageMap = {
+          "Asteroids": "game icon/asteroids.png",
+          "Pitfall!": "game icon/Pitfall!.png",
+          "Pac-Man": "game icon/Pac-Man.png",
+          "Baseball": "game icon/Baseball.png",
+          "Duck Hunt": "game icon/Duck_Hunt.png",
+          "Super Mario Bros.": "game icon/Super Mario Bros.png",
+          "The Legend of Zelda": "game icon/The Legend of Zelda.png",
+          "Zelda II: The Adventure of Link": "game icon/Zelda II The Adventure of Link.png",
+          "Super Mario Bros. 3": "game icon/Super Mario Bros 3.png",
+          "Tetris": "game icon/Tetris.png",
+          "Super Mario World": "game icon/Super Mario World.png",
+          "The Legend of Zelda: A Link to the Past": "game icon/The Legend of Zelda A Link to the Past.png",
+          "Super Mario Land 2: 6 Golden Coins": "game icon/Super Mario Land 2 6 Golden Coins.png",
+          "Super Mario All-Stars": "game icon/Super Mario All-Stars.png",
+          "Donkey Kong Country": "game icon/Donkey Kong Country.png",
+          "Donkey Kong Country 2: Diddy's Kong Quest": "game icon/Donkey Kong Country 2 Diddy's Kong Quest.png",
+          "Pokemon Red/Pokemon Blue": "game icon/Pokemon Red Pokemon Blue.png",
+          "Gran Turismo": "game icon/Gran Turismo.png",
+          "Pokemon Yellow: Special Pikachu Edition": "game icon/Pokemon Yellow Special Pikachu Edition.png",
+          "Pokemon Gold/Pokemon Silver": "game icon/Pokemon Gold Pokemon Silver.png",
+          "Pokemon Crystal Version": "game icon/Pokemon Crystal Version.png",
 
-      let bottomAxis = d3.axisBottom(xScale).ticks(20);
-      let bottomGridlines = d3.axisBottom(xScale).ticks(20).tickSize(-chartWidth - 10).tickFormat("");
-      let leftAxis = d3.axisLeft(yScale);
-      let leftGridlines = d3.axisLeft(yScale).tickSize(-chartWidth - 10).tickFormat("");
+        };
 
-      annotations.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(" + margin.left + "," + (chartHeight + margin.top + 10) + ")")
-        .call(bottomAxis);
+        let bottomAxis = d3.axisBottom(xScale).ticks(20);
+        let bottomGridlines = d3.axisBottom(xScale).ticks(20).tickSize(-chartWidth - 10).tickFormat("");
+        let leftAxis = d3.axisLeft(yScale);
+        let leftGridlines = d3.axisLeft(yScale).tickSize(-chartWidth - 10).tickFormat("");
 
-      annotations.append("g")
-        .attr("class", "x gridlines")
-        .attr("transform", "translate(" + margin.left + "," + (chartHeight + margin.top + 10) + ")")
-        .call(bottomGridlines);
+        annotations.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(" + margin.left + "," + (chartHeight + margin.top + 10) + ")")
+          .call(bottomAxis);
 
-      annotations.append("g")
-        .attr("class", "y axis")
-        .attr("transform", "translate(" + (margin.left - 30) + "," + margin.top + ")")
-        .call(leftAxis);
+        annotations.append("g")
+          .attr("class", "x gridlines")
+          .attr("transform", "translate(" + margin.left + "," + (chartHeight + margin.top + 10) + ")")
+          .call(bottomGridlines);
 
-      annotations.append("g")
-        .attr("class", "y gridlines")
-        .attr("transform", "translate(" + (margin.left - 10) + "," + margin.top + ")")
-        .call(leftGridlines);
+        annotations.append("g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(" + (margin.left - 30) + "," + margin.top + ")")
+          .call(leftAxis);
 
-      svg.append("text")
-        .attr("class", "x axis-label")
-        .attr("x", margin.left + chartWidth / 2)
-        .attr("y", chartHeight + 80)
-        .text("Year");
+        annotations.append("g")
+          .attr("class", "y gridlines")
+          .attr("transform", "translate(" + (margin.left - 10) + "," + margin.top + ")")
+          .call(leftGridlines);
 
-      svg.append("text")
-        .attr("class", "y axis-label")
-        .attr("x", -(chartHeight / 2) - margin.top)
-        .attr("y", 20)
-        .attr("transform", "rotate(-90)")
-        .text("Game Genre");
+        svg.append("text")
+          .attr("class", "x axis-label")
+          .attr("x", margin.left + chartWidth / 2)
+          .attr("y", chartHeight + 80)
+          .text("Year");
 
-        // 原本的code
-        // chartArea.selectAll("image")
-        //         .data(data)
-        //         .enter()
-        //         .append("image")
-        //         .attr("xlink:href", d => imageMap[d.Name])
-        //         .attr("x", d => xScale(+d.Year)) 
-        //         .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2)
-        //         .attr("width", d => sizeScale(+d.Global_Sales + 20))
-        //         .attr("height", d => sizeScale(+d.Global_Sales + 20))
-        //         .attr("opacity", 0.8);
-
-        // 尝试的code
-        // chartArea.selectAll("image")
-        //           .data(data)
-        //           .enter()
-        //           .append("image")
-        //           .attr("xlink:href", d => imageMap[d.Name])
-        //           .attr("x", d => xScale(+d.Year) - sizeScale(+d.Global_Sales) / 2) 
-        //           .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2 - sizeScale(+d.Global_Sales) / 2) 
-        //           .attr("width", d => sizeScale(+d.Global_Sales))
-        //           .attr("height", d => sizeScale(+d.Global_Sales))
-        //           .attr("opacity", 0.8)
-        //           .attr("stroke", d => colorScale(d.Platform))
-        //           .attr("stroke-width", 5)
-        //           .attr("stroke-opacity", 0.9);
+        svg.append("text")
+          .attr("class", "y axis-label")
+          .attr("x", -(chartHeight / 2) - margin.top)
+          .attr("y", 20)
+          .attr("transform", "rotate(-90)")
+          .text("Game Genre");
 
         chartArea.selectAll("circle")
           .data(data)
@@ -183,18 +156,15 @@
           .attr("height", d => sizeScale(d.Global_Sales))
           .attr("opacity", 0.8);
 
+        const platformLegend = data.filter((d, index, self) => index === self.findIndex(t => t.Platform === d.Platform));
 
-    //platform legend
-    const platformLegend = data.filter((d, index, self) => index === self.findIndex(t => t.Platform === d.Platform));
-    
-    const legend = svg.append("g")
-                      .attr("class", "legendGroup")
-                      .attr("transform", `translate(${margin.right+20}, ${margin.bottom+chartHeight+50})`)
-                      .style("border", "1px solid black")  
-                      .style("background-color", "#f9f9f9"); 
-    
-    // Added legend title
-    legend.append("text")
+        const legend = svg.append("g")
+          .attr("class", "legendGroup")
+          .attr("transform", "translate(" + margin.left + "," + (chartHeight + margin.top + 90) + ")")
+          .style("border", "1px solid black")
+          .style("background-color", "#f9f9f9");
+
+        legend.append("text")
           .attr("class", "legendTitle")
           .attr("x", 10)
           .attr("y", -10)
@@ -202,32 +172,79 @@
           .attr("font-weight", "bold")
           .text("Platform Type");
 
-    // Create legend items for each unique platform
-    const legendItems = legend.selectAll("legendItem")
-      .data(platformLegend)
-      .enter()
-      .append("g")
-      .attr("class", "legendItem")
-      .attr("transform", (d, i) => `translate(0, ${i * 25})`); 
+        const legendItems = legend.selectAll("legendItem")
+          .data(platformLegend)
+          .enter()
+          .append("g")
+          .attr("class", "legendItem")
+          .attr("transform", (d, i) => "translate(0," + (i * 25) + ")")
 
-    // color circle
-    legendItems.append("circle")
-      .attr("r", 10)
-      .attr("cx", 15)
-      .attr("cy", 15)
-      .attr("fill", d => colorScale(d.Platform))
-      .attr("opacity", 0.7);
 
-    // text
-    legendItems.append("text")
-      .attr("x", 40)
-      .attr("y", 20) // Center text vertically relative to the rectangles
-      .attr("font-size", "20px")
-      .attr("fill", "#000")  // Set text color for better visibility
-      .text(d => d.Platform);
+        legendItems.append("circle")
+          .attr("r", 10)
+          .attr("cx", 15)
+          .attr("cy", 15)
+          .attr("fill", d => colorScale(d.Platform))
+          .attr("opacity", 0.7);
 
-      console.log(data);
-    });
-  </script>
+        legendItems.append("text")
+          .attr("x", 40)
+          .attr("y", 20)
+          .attr("font-size", "20px")
+          .attr("fill", "#000") 
+          .text(d => d.Platform);
+
+        console.log(data);
+
+        const uniqueGames = data.filter((d, index, self) =>
+          index === self.findIndex(t => t.Name === d.Name)
+        );
+
+        const gameLegend = svg.append("g")
+          .attr("class", "gameLegend")
+          .attr("transform", "translate(" + (margin.left + 160) + "," + (chartHeight + margin.top + 100) + ")");
+
+
+        gameLegend.append("text")
+          .attr("class", "legendTitle")
+          .attr("x", 0)
+          .attr("y", -20)
+          .attr("font-size", "20px")
+          .attr("font-weight", "bold")
+          .text("Game Legends");
+
+
+        const gameLegendItems = gameLegend.selectAll(".gameLegendItem")
+          .data(uniqueGames)
+          .enter()
+          .append("g")
+          .attr("class", "gameLegendItem")
+          .attr("transform", (d, i) => "translate(" + ((i % 4) * 400) + "," + (Math.floor(i / 4) * 80) + ")")
+
+
+
+        gameLegendItems.append("image")
+          .attr("xlink:href", d => imageMap[d.Name])
+          .attr("x", 0)
+          .attr("y", 0)
+          .attr("width", 50)
+          .attr("height", 50)
+          .attr("opacity", 0.8);
+
+        gameLegendItems.append("text")
+          .attr("x", 60)
+          .attr("y", 30)
+          .attr("font-size", "20px")
+          .attr("fill", "#000")
+          .text(d => d.Name);
+
+      });
+
+
+
+
+
+    </script>
 </body>
+
 </html>
