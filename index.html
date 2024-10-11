@@ -8,12 +8,12 @@
   <style>
     .axis text {
       font-family: 'Press Start 2P', cursive;
-      font-size: 12px;
+      font-size: 16px;
 
     }
 
     .gridlines line {
-      stroke: #fbf7f7;
+      stroke: #878f99;
       stroke-opacity: 1;
     }
 
@@ -25,23 +25,23 @@
       font-family: 'Press Start 2P', cursive;
       font-size: 20px;
       text-anchor: middle;
-      fill: #fff;
+      fill: rgb(4, 4, 4);
     }
 
     .legendItem text {
-      fill: #fff;
+      fill: rgb(4, 4, 4);
     }
 
     .legendTitle text {
-      fill: #fff;
+      fill: rgb(4, 4, 4);
     }
 
     .gameLegendItem text {
-      fill: #fff;
+      fill: rgb(4, 4, 4);
     }
 
     .gameLegend {
-      fill: #fff;
+      fill: rgb(4, 4, 4);
     }
 
 
@@ -55,9 +55,9 @@
     }
 
     body {
-      background: rgb(4, 4, 4);
+      background: #f5f3e7;
       font-family: 'Press Start 2P', cursive;
-      color: #fff;
+      color: rgb(4, 4, 4);
     }
 
     @keyframes marquee {
@@ -65,7 +65,7 @@
       0%,
       100% {
         transform: scale(1);
-        color: #fafaf9;
+        color: rgb(4, 4, 4);
         opacity: 1;
       }
 
@@ -343,13 +343,13 @@
     <span>M</span><span>i</span><span>l</span><span>l</span><span>e</span><span>n</span><span>n</span><span>i</span><span>u</span><span>m</span>
   </p>
   <p>
-    <svg id="salesChart" width="3000" height="2000"></svg>
+    <svg id="salesChart" width="3500" height="2000"></svg>
 
     <script>
       const svg = d3.select("svg#salesChart");
       const width = svg.attr("width");
       const height = svg.attr("height");
-      const margin = { top: 10, right: 1000, bottom: 800, left: 200 };
+      const margin = { top: 30, right: 1000, bottom: 800, left: 200 };
       const chartWidth = width - margin.left - margin.right;
       const chartHeight = height - margin.top - margin.bottom - 300;
 
@@ -430,7 +430,7 @@
         svg.append("text")
           .attr("class", "x axis-label")
           .attr("x", margin.left + chartWidth / 2)
-          .attr("y", chartHeight + 80)
+          .attr("y", chartHeight + 100)
           .text("Year");
 
         svg.append("text")
@@ -480,6 +480,21 @@
           .attr("width", d => sizeScale(d.Global_Sales))
           .attr("height", d => sizeScale(d.Global_Sales))
           .attr("opacity", 1);
+        
+        const formatSales = d3.format("$.1f"); // We learned the d3.format from "https://d3js.org/d3-format"
+
+        // console.log(formatSales);
+
+        chartArea.selectAll("text")
+          .data(data)
+          .enter()
+          .append("text")
+          .attr("x", d => xScale(d.Year))
+          .attr("y", d => yScale(d.Genre) - 15)
+          .attr("text-anchor", "middle") 
+          .attr("font-size", "15px")
+          .attr("fill", "#000")  
+          .text(d => formatSales(d.Global_Sales) + "M");
 
         const platformLegend = data.filter((d, index, self) => index === self.findIndex(t => t.Platform === d.Platform));//we do not know how to filter the each unique once use filter, so we google it and find one function called self.findIndex, will will find the first element that fulfills the t => t.Platform === d.Platform condition, and let it back. And we need to use d, index and self as three parameters, which represent the current item, the position of this item in the array and the original data array.if index and findindex equal, meaning d appears for the first time, we will keep it, if not, d will discard.  
 
@@ -497,7 +512,7 @@
           .attr("y", -25)
           .attr("font-size", "20px")
           .attr("font-weight", "bold")
-          .attr("fill", "#fff")
+          .attr("fill", "rgb(4, 4, 4)")
           .text("Platform Type");
 
         const legendItems = legend.selectAll("legendItem")
@@ -561,7 +576,7 @@
         gameLegendItems.append("text")
           .attr("x", 60)
           .attr("y", 30)
-          .attr("font-size", "13px")
+          .attr("font-size", "16px")
           .attr("fill", "#000")
           .text(d => d.Name);
 
