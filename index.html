@@ -156,7 +156,7 @@
           .attr("height", d => sizeScale(d.Global_Sales))
           .attr("opacity", 0.8);
 
-        const platformLegend = data.filter((d, index, self) => index === self.findIndex(t => t.Platform === d.Platform));
+        const platformLegend = data.filter((d, index, self) => index === self.findIndex(t => t.Platform === d.Platform));//
 
         const legend = svg.append("g")
           .attr("class", "legendGroup")
