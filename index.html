@@ -156,7 +156,7 @@
           .attr("height", d => sizeScale(d.Global_Sales))
           .attr("opacity", 0.8);
 
-        const platformLegend = data.filter((d, index, self) => index === self.findIndex(t => t.Platform === d.Platform));//
+        const platformLegend = data.filter((d, index, self) => index === self.findIndex(t => t.Platform === d.Platform));//we do not know how to filter the each unique once use filter, so we google it and find one function called self.findIndex, will will find the first element that fulfills the t => t.Platform === d.Platform condition, and let it back. And we need to use d, index and self as three parameters, which represent the current item, the position of this item in the array and the original data array.if index and findindex equal, meaning d appears for the first time, we will keep it, if not, d will discard.  
 
         const legend = svg.append("g")
           .attr("class", "legendGroup")
