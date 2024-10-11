@@ -62,9 +62,9 @@
                         .domain(yExtent)
                         .range([chartHeight, 0]);
 
-      const sizeScale = d3.scaleSqrt()
+      const sizeScale = d3.scaleLinear()
                           .domain([0, d3.max(data, d => d.Global_Sales)])
-                          .range([5, 40]);
+                          .range([50, 50]);
 
       const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
                            .domain(data.map(d => d.Platform));
@@ -163,12 +163,12 @@
           .data(data)
           .enter()
           .append("circle")
-          .attr("cx", d => xScale(+d.Year))
+          .attr("cx", d => xScale(d.Year))
           .attr("cy", d => yScale(d.Genre) + yScale.bandwidth() / 2)
-          .attr("r", d => sizeScale(+d.Global_Sales + 20) / 2)
-          .attr("fill", "none")
+          .attr("r", d => sizeScale(d.Global_Sales + 20) / 2)
+          .attr("fill", "white")
           .attr("stroke", d => colorScale(d.Platform))
-          .attr("stroke-width", 5)
+          .attr("stroke-width", 6)
           .attr("stroke-opacity", 0.9);
 
         chartArea.selectAll("image")
@@ -176,11 +176,23 @@
           .enter()
           .append("image")
           .attr("xlink:href", d => imageMap[d.Name])
-          .attr("x", d => xScale(+d.Year) - sizeScale(+d.Global_Sales) / 2)
-          .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2 - sizeScale(+d.Global_Sales) / 2)
-          .attr("width", d => sizeScale(+d.Global_Sales))
-          .attr("height", d => sizeScale(+d.Global_Sales))
+          .attr("x", d => xScale(d.Year) - sizeScale(+d.Global_Sales) / 2)
+          .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2 - sizeScale(d.Global_Sales) / 2)
+          .attr("width", d => sizeScale(d.Global_Sales))
+          .attr("height", d => sizeScale(d.Global_Sales))
           .attr("opacity", 0.8);
+
+        // //add text
+        // chartArea.selectAll("text")
+        //           .data(data)
+        //           .enter()
+        //           .append("text")
+        //           .attr("x", d => xScale(d.Year))
+        //           .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2)
+        //           .attr("text-anchor", "middle") 
+        //           .attr("font-size", "15px")
+        //           .attr("fill", "#000")  
+        //           .text(d => d.Global_Sales);
 
 
     //platform legend
