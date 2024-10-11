@@ -47,24 +47,27 @@
 
     let annotations = svg.append("g").attr("id", "annotations");
     let chartArea = svg.append("g").attr("id", "points")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     d3.csv("Filtered_Top_Games__2000_and_Earlier_.csv", d3.autoType).then(data => {
       console.log("dataset:", Object.keys(data[0]));
       
       const xExtent = d3.extent(data, d => d.Year);
       const xScale = d3.scaleLinear()
-        .domain(xExtent)
-        .range([0, chartWidth]);
+                        .domain(xExtent)
+                        .range([0, chartWidth]);
 
       const yExtent = d3.map(data, d => d.Genre);
       const yScale = d3.scaleBand()
-        .domain(yExtent)
-        .range([chartHeight, 0]);
+                        .domain(yExtent)
+                        .range([chartHeight, 0]);
 
       const sizeScale = d3.scaleSqrt()
-        .domain([0, d3.max(data, d => d.Global_Sales)])
-        .range([5, 40]);
+                          .domain([0, d3.max(data, d => d.Global_Sales)])
+                          .range([5, 40]);
+
+      const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
+                           .domain(data.map(d => d.Platform));
 
       const imageMap = {
         "Asteroids": "game icon/asteroids.png",
@@ -129,16 +132,98 @@
         .attr("transform", "rotate(-90)")
         .text("Game Genre");
 
-      chartArea.selectAll("image")
-        .data(data)
-        .enter()
-        .append("image")
-        .attr("xlink:href", d => imageMap[d.Name])
-        .attr("x", d => xScale(+d.Year) - 20) 
-        .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2 - 20)
-        .attr("width", d => sizeScale(+d.Global_Sales))
-        .attr("height", d => sizeScale(+d.Global_Sales))
-        .attr("opacity", 0.8);
+        // 原本的code
+        // chartArea.selectAll("image")
+        //         .data(data)
+        //         .enter()
+        //         .append("image")
+        //         .attr("xlink:href", d => imageMap[d.Name])
+        //         .attr("x", d => xScale(+d.Year)) 
+        //         .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2)
+        //         .attr("width", d => sizeScale(+d.Global_Sales + 20))
+        //         .attr("height", d => sizeScale(+d.Global_Sales + 20))
+        //         .attr("opacity", 0.8);
+
+        // 尝试的code
+        // chartArea.selectAll("image")
+        //           .data(data)
+        //           .enter()
+        //           .append("image")
+        //           .attr("xlink:href", d => imageMap[d.Name])
+        //           .attr("x", d => xScale(+d.Year) - sizeScale(+d.Global_Sales) / 2) 
+        //           .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2 - sizeScale(+d.Global_Sales) / 2) 
+        //           .attr("width", d => sizeScale(+d.Global_Sales))
+        //           .attr("height", d => sizeScale(+d.Global_Sales))
+        //           .attr("opacity", 0.8)
+        //           .attr("stroke", d => colorScale(d.Platform))
+        //           .attr("stroke-width", 5)
+        //           .attr("stroke-opacity", 0.9);
+
+        chartArea.selectAll("circle")
+          .data(data)
+          .enter()
+          .append("circle")
+          .attr("cx", d => xScale(+d.Year))
+          .attr("cy", d => yScale(d.Genre) + yScale.bandwidth() / 2)
+          .attr("r", d => sizeScale(+d.Global_Sales + 20) / 2)
+          .attr("fill", "none")
+          .attr("stroke", d => colorScale(d.Platform))
+          .attr("stroke-width", 5)
+          .attr("stroke-opacity", 0.9);
+
+        chartArea.selectAll("image")
+          .data(data)
+          .enter()
+          .append("image")
+          .attr("xlink:href", d => imageMap[d.Name])
+          .attr("x", d => xScale(+d.Year) - sizeScale(+d.Global_Sales) / 2)
+          .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2 - sizeScale(+d.Global_Sales) / 2)
+          .attr("width", d => sizeScale(+d.Global_Sales))
+          .attr("height", d => sizeScale(+d.Global_Sales))
+          .attr("opacity", 0.8);
+
+
+    //platform legend
+    const platformLegend = data.filter((d, index, self) => index === self.findIndex(t => t.Platform === d.Platform));
+    
+    const legend = svg.append("g")
+                      .attr("class", "legendGroup")
+                      .attr("transform", `translate(${margin.right+20}, ${margin.bottom+chartHeight+50})`)
+                      .style("border", "1px solid black")  
+                      .style("background-color", "#f9f9f9"); 
+    
+    // Added legend title
+    legend.append("text")
+          .attr("class", "legendTitle")
+          .attr("x", 0)
+          .attr("y", -10)
+          .attr("font-size", "20px")
+          .attr("font-weight", "bold")
+          .text("Platform Type");
+
+    // Create legend items for each unique platform
+    const legendItems = legend.selectAll("legendItem")
+      .data(platformLegend)
+      .enter()
+      .append("g")
+      .attr("class", "legendItem")
+      .attr("transform", (d, i) => `translate(0, ${i * 25})`); 
+
+    // color circle
+    legendItems.append("circle")
+      .attr("r", 10)
+      .attr("cx", 15)
+      .attr("cy", 15)
+      .attr("fill", d => colorScale(d.Platform))
+      .attr("opacity", 0.7);
+
+    // text
+    legendItems.append("text")
+      .attr("x", 40)
+      .attr("y", 20) // Center text vertically relative to the rectangles
+      .attr("font-size", "20px")
+      .attr("fill", "#000")  // Set text color for better visibility
+      .text(d => d.Platform);
 
       console.log(data);
     });
