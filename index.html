@@ -30,12 +30,13 @@
       padding-top: 18px;
       padding-bottom: 18px;
     }
+    
   </style>
 </head>
 
 <body>
-  <p> Game Sales by Year, Genre, and Platform <p>
-  <svg id="salesChart" width="1000" height="900"></svg>
+  <p> Game Sales by Year, Genre, and Platform at the Dawn of Millennium<p>
+  <svg id="salesChart" width="1500" height="900"></svg>
 
   <script>
     const svg = d3.select("svg#salesChart");
@@ -64,7 +65,7 @@
 
       const sizeScale = d3.scaleLinear()
                           .domain([0, d3.max(data, d => d.Global_Sales)])
-                          .range([50, 50]);
+                          .range([40, 100]);
 
       const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
                            .domain(data.map(d => d.Platform));
@@ -165,7 +166,7 @@
           .append("circle")
           .attr("cx", d => xScale(d.Year))
           .attr("cy", d => yScale(d.Genre) + yScale.bandwidth() / 2)
-          .attr("r", d => sizeScale(d.Global_Sales + 20) / 2)
+          .attr("r", d => sizeScale(d.Global_Sales) / 2 + 5)
           .attr("fill", "white")
           .attr("stroke", d => colorScale(d.Platform))
           .attr("stroke-width", 6)
@@ -182,18 +183,6 @@
           .attr("height", d => sizeScale(d.Global_Sales))
           .attr("opacity", 0.8);
 
-        // //add text
-        // chartArea.selectAll("text")
-        //           .data(data)
-        //           .enter()
-        //           .append("text")
-        //           .attr("x", d => xScale(d.Year))
-        //           .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2)
-        //           .attr("text-anchor", "middle") 
-        //           .attr("font-size", "15px")
-        //           .attr("fill", "#000")  
-        //           .text(d => d.Global_Sales);
-
 
     //platform legend
     const platformLegend = data.filter((d, index, self) => index === self.findIndex(t => t.Platform === d.Platform));
@@ -207,7 +196,7 @@
     // Added legend title
     legend.append("text")
           .attr("class", "legendTitle")
-          .attr("x", 0)
+          .attr("x", 10)
           .attr("y", -10)
           .attr("font-size", "20px")
           .attr("font-weight", "bold")
