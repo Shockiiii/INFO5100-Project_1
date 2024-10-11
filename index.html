@@ -360,7 +360,7 @@
       const svg = d3.select("svg#salesChart");
       const width = svg.attr("width");
       const height = svg.attr("height");
-      const margin = { top: 30, right: 1000, bottom: 800, left: 200 };
+      const margin = { top: 30, right: 1000, bottom: 800, left: 260 };
       const chartWidth = width - margin.left - margin.right;
       const chartHeight = height - margin.top - margin.bottom - 300;
 
@@ -447,7 +447,7 @@
         svg.append("text")
           .attr("class", "y axis-label")
           .attr("x", -(chartHeight / 2) - margin.top)
-          .attr("y", 20)
+          .attr("y", 50)
           .attr("transform", "rotate(-90)")
           .text("Game Genre");
 
@@ -460,24 +460,25 @@
           .attr("r", d => sizeScale(d.Global_Sales) / 2 + 5)
           .attr("fill", "white")
           .attr("stroke", d => colorScale(d.Platform))
-          .attr("stroke-width", 6)
+          .attr("stroke-width", 10)
           .attr("stroke-opacity", 0.9)
           .each(function () {
 
-            d3.select(this)
-              .append("animate")
-              .attr("attributeName", "stroke-width")
-              .attr("values", "10;20;10")
-              .attr("dur", "10s")
-              .attr("repeatCount", "indefinite");
+          // something we tried in flashing the strokes to make it more stands out
+          // d3.select(this)
+          //   .append("animate")
+          //   .attr("attributeName", "stroke-width")
+          //   .attr("values", "10;20;10")
+          //   .attr("dur", "10s")
+          //   .attr("repeatCount", "indefinite");
 
 
-            d3.select(this)
-              .append("animate")
-              .attr("attributeName", "stroke-opacity")
-              .attr("values", "0.5;1;0.5")
-              .attr("dur", "2s")
-              .attr("repeatCount", "indefinite");
+          // d3.select(this)
+          //   .append("animate")
+          //   .attr("attributeName", "stroke-opacity")
+          //   .attr("values", "0.5;1;0.5")
+          //   .attr("dur", "2s")
+          //   .attr("repeatCount", "indefinite");
           });
 
 
