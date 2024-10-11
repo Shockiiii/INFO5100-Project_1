@@ -44,14 +44,21 @@
       fill: rgb(4, 4, 4);
     }
 
-
     p {
       font-family: 'Press Start 2P', cursive;
       font-size: 20px;
       text-align: center;
       padding-top: 18px;
       padding-bottom: 18px;
+    }
 
+    ul { 
+      position: absolute;
+      font-size: 16px;
+      top: 700px; 
+      left: 2520px; 
+      width: 300px; 
+      line-height: 1.8;
     }
 
     body {
@@ -328,6 +335,10 @@
 </head>
 
 <body>
+  <p>
+    Group Member: Zhuohui Wu, Jin Tian, Zulin Luo
+  </p>
+
   <p class="neon-title">
     <span>G</span><span>a</span><span>m</span><span>e</span>
     <span>S</span><span>a</span><span>l</span><span>e</span><span>s</span>
@@ -500,9 +511,7 @@
 
         const legend = svg.append("g")
           .attr("class", "legendGroup")
-          .attr("transform", "translate(" + (margin.left + chartWidth + 60
-
-          ) + "," + (margin.top + 80) + ")")
+          .attr("transform", "translate(" + (margin.left + chartWidth + 60) + "," + (margin.top + 80) + ")")
           .style("border", "1px solid black")
           .style("background-color", "#f9f9f9");
 
@@ -534,10 +543,9 @@
           .attr("x", 50)
           .attr("y", 20)
           .attr("font-size", "20px")
-          .attr("fill", "#fff")
           .text(d => d.Platform);
 
-        console.log(data);
+        // console.log(data);
 
         const uniqueGames = data.filter((d, index, self) => index === self.findIndex(t => t.Name === d.Name)
         );
@@ -564,7 +572,6 @@
           .attr("transform", (d, i) => "translate(" + ((i % 3) * 750) + "," + (Math.floor(i / 3) * 90) + ")")
 
 
-
         gameLegendItems.append("image")
           .attr("xlink:href", d => imageMap[d.Name])
           .attr("x", 0)
@@ -582,11 +589,13 @@
 
       });
 
-
-
-
-
     </script>
+      
+    <ul>
+      Image data point size meaning:
+      <li>It represented the total global sales of that game in corresponding year.</li>
+      <li>The number above each point shows the actual sales count in millions.</li>
+    </ul>
 </body>
 
 </html>
