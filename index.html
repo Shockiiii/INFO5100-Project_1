@@ -67,11 +67,28 @@
         .range([5, 40]);
 
       const imageMap = {
-        "2600": "2600.png",
-        "NES": "NES.png",
-        "GB": "GB.png",
-        "SNES": "SNES.png",
-        "PS": "PS.png"
+        "Asteroids": "game icon/asteroids.png",
+        "Pitfall!": "game icon/Pitfall!.png",
+        "Pac-Man": "game icon/Pac-Man.png",
+        "Baseball": "game icon/Baseball.png",
+        "Duck Hunt": "game icon/Duck_Hunt.png",
+        "Super Mario Bros.": "game icon/Super Mario Bros.png",
+        "The Legend of Zelda": "game icon/The Legend of Zelda.png",
+        "Zelda II: The Adventure of Link": "game icon/Zelda II The Adventure of Link.png",
+        "Super Mario Bros. 3": "game icon/Super Mario Bros 3.png",
+        "Tetris": "game icon/Tetris.png",
+        "Super Mario World": "game icon/Super Mario World.png",
+        "The Legend of Zelda: A Link to the Past": "game icon/The Legend of Zelda A Link to the Past.png",
+        "Super Mario Land 2: 6 Golden Coins": "game icon/Super Mario Land 2 6 Golden Coins.png",
+        "Super Mario All-Stars": "game icon/Super Mario All-Stars.png",
+        "Donkey Kong Country": "game icon/Donkey Kong Country.png",
+        "Donkey Kong Country 2: Diddy's Kong Quest": "game icon/Donkey Kong Country 2 Diddy's Kong Quest.png",
+        "Pokemon Red/Pokemon Blue": "game icon/Pokemon Red Pokemon Blue.png",
+        "Gran Turismo": "game icon/Gran Turismo.png",
+        "Pokemon Yellow: Special Pikachu Edition": "game icon/Pokemon Yellow Special Pikachu Edition.png",
+        "Pokemon Gold/Pokemon Silver": "game icon/Pokemon Gold Pokemon Silver.png",
+        "Pokemon Crystal Version": "game icon/Pokemon Crystal Version.png",
+
       };
 
       let bottomAxis = d3.axisBottom(xScale).ticks(20);
@@ -116,7 +133,7 @@
         .data(data)
         .enter()
         .append("image")
-        .attr("xlink:href", d => imageMap[d.Platform])
+        .attr("xlink:href", d => imageMap[d.Name])
         .attr("x", d => xScale(+d.Year) - 20) 
         .attr("y", d => yScale(d.Genre) + yScale.bandwidth() / 2 - 20)
         .attr("width", d => sizeScale(+d.Global_Sales))
