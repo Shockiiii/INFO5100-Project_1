@@ -6,6 +6,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
+    #container {
+      zoom: 0.5;
+    }
+
     .axis text {
       font-family: 'Press Start 2P', cursive;
       font-size: 16px;
@@ -52,12 +56,12 @@
       padding-bottom: 18px;
     }
 
-    ul { 
+    ul {
       position: absolute;
       font-size: 16px;
-      top: 700px; 
-      left: 2520px; 
-      width: 300px; 
+      top: 700px;
+      left: 2520px;
+      width: 300px;
       line-height: 1.8;
     }
 
@@ -335,6 +339,7 @@
 </head>
 
 <body>
+  <div id="container">
   <p>
     Group Member: Zhuohui Wu, Jin Tian, Zulin Luo
   </p>
@@ -491,7 +496,7 @@
           .attr("width", d => sizeScale(d.Global_Sales))
           .attr("height", d => sizeScale(d.Global_Sales))
           .attr("opacity", 1);
-        
+
         const formatSales = d3.format("$.1f"); // We learned the d3.format from "https://d3js.org/d3-format"
 
         // console.log(formatSales);
@@ -502,9 +507,9 @@
           .append("text")
           .attr("x", d => xScale(d.Year))
           .attr("y", d => yScale(d.Genre) - 15)
-          .attr("text-anchor", "middle") 
+          .attr("text-anchor", "middle")
           .attr("font-size", "15px")
-          .attr("fill", "#000")  
+          .attr("fill", "#000")
           .text(d => formatSales(d.Global_Sales) + "M");
 
         const platformLegend = data.filter((d, index, self) => index === self.findIndex(t => t.Platform === d.Platform));//we do not know how to filter the each unique once use filter, so we google it and find one function called self.findIndex, will will find the first element that fulfills the t => t.Platform === d.Platform condition, and let it back. And we need to use d, index and self as three parameters, which represent the current item, the position of this item in the array and the original data array.if index and findindex equal, meaning d appears for the first time, we will keep it, if not, d will discard.  
@@ -590,12 +595,13 @@
       });
 
     </script>
-      
-    <ul>
-      Image data point size meaning:
-      <li>It represented the total global sales of that game in corresponding year.</li>
-      <li>The number above each point shows the actual sales count in millions.</li>
-    </ul>
+
+  <ul>
+    Image data point size meaning:
+    <li>It represented the total global sales of that game in corresponding year.</li>
+    <li>The number above each point shows the actual sales count in millions.</li>
+  </ul>
+</div>
 </body>
 
 </html>
