@@ -35,7 +35,7 @@
 
 <body>
   <p> Game Sales by Year, Genre, and Platform <p>
-  <svg id="salesChart" width="1000" height="600"></svg>
+  <svg id="salesChart" width="1000" height="700"></svg>
 
   <script>
     const svg = d3.select("svg#salesChart");
@@ -43,7 +43,7 @@
     const height = svg.attr("height");
     const margin = { top: 10, right: 20, bottom: 50, left: 130 };
     const chartWidth = width - margin.left - margin.right;
-    const chartHeight = height - margin.top - margin.bottom ;
+    const chartHeight = height - margin.top - margin.bottom-100 ;
 
     let annotations = svg.append("g").attr("id", "annotations");
     let chartArea = svg.append("g").attr("id", "points")
